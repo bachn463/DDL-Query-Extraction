@@ -1,0 +1,9 @@
+yfinance
+fredapi
+pandas
+pyarrow
+sqlglot
+duckdb
+pyiceberg[sql-sqlite,pyarrow]
+openai
+python-dotenv

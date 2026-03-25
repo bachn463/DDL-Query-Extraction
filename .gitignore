@@ -1,0 +1,6 @@
+.env
+warehouse/
+data/raw/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
