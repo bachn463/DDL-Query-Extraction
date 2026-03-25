@@ -1,0 +1,1 @@
+# Extracting Join Key Relationships in DDL and Query History
