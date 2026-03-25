@@ -1,15 +1,3 @@
-"""
-Commit 2: Pull raw market data from yfinance.
-
-Pulls:
-- 20 individual stocks (10 semis, 10 banks) — 2yr daily OHLCV
-- 2 sector ETFs (XLK, XLF) — 2yr daily OHLCV
-- VIX (^VIX) — 2yr daily
-- Options snapshots for NVDA, AMD, JPM (current chains, trade_date = today)
-
-Saves all as Parquet to data/raw/
-"""
-
 import os
 from datetime import date, timedelta
 
@@ -31,9 +19,7 @@ START_DATE = END_DATE - timedelta(days=2 * 365)
 
 OPTIONS_TICKERS = ["NVDA", "AMD", "JPM"]
 
-
 def pull_prices():
-    """Download 2yr daily OHLCV for all tickers."""
     print(f"Pulling prices for {len(ALL_TICKERS)} tickers from {START_DATE} to {END_DATE}...")
     df = yf.download(ALL_TICKERS, start=str(START_DATE), end=str(END_DATE), group_by="ticker")
 
@@ -59,7 +45,6 @@ def pull_prices():
 
 
 def pull_options():
-    """Pull current options chain snapshots for NVDA, AMD, JPM."""
     today = date.today()
     print(f"\nPulling options chains for {OPTIONS_TICKERS} (trade_date={today})...")
 
@@ -94,11 +79,9 @@ def pull_options():
 
 
 def validate():
-    """Run validation checks on pulled data."""
     print("\n--- Validation ---")
     errors = []
 
-    # Check all 20 stock tickers + 2 ETFs + VIX
     expected_price_files = [t.replace("^", "") for t in ALL_TICKERS]
     for name in expected_price_files:
         path = os.path.join(RAW_DIR, f"{name}_prices.parquet")
@@ -111,11 +94,10 @@ def validate():
         dates = pd.to_datetime(df[date_col]).sort_values()
         gaps = dates.diff().dt.days
         max_gap = gaps.max()
-        if max_gap > 7:  # 5 trading days ~ 7 calendar days
+        if max_gap > 7:  # 5 trading days --> 7 normal days
             errors.append(f"{name}: max gap of {max_gap} calendar days")
         print(f"  {name}: {len(df)} rows, max gap {max_gap} cal days")
 
-    # Check options files
     for ticker in OPTIONS_TICKERS:
         path = os.path.join(RAW_DIR, f"{ticker}_options.parquet")
         if not os.path.exists(path):
