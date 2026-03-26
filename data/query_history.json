@@ -1,0 +1,41 @@
+[
+  "SELECT d.ticker, d.trade_date, d.adj_close, d.volume FROM market.daily_prices d JOIN market.symbol_ref s ON d.ticker = s.ticker WHERE s.sector_etf = 'XLK' ORDER BY d.trade_date DESC",
+
+  "SELECT d.ticker, d.trade_date, d.adj_close, d.volume FROM market.daily_prices d JOIN market.symbol_ref s ON d.ticker = s.ticker WHERE s.sector_etf = 'XLF' ORDER BY d.trade_date DESC",
+
+  "SELECT n.trade_date, n.adj_close AS nvda_close, a.adj_close AS amd_close, (n.adj_close / LAG(n.adj_close) OVER (ORDER BY n.trade_date) - 1) AS nvda_return, (a.adj_close / LAG(a.adj_close) OVER (ORDER BY a.trade_date) - 1) AS amd_return FROM market.daily_prices n JOIN market.daily_prices a ON n.trade_date = a.trade_date WHERE n.ticker = 'NVDA' AND a.ticker = 'AMD'",
+
+  "SELECT d.ticker, d.trade_date, d.adj_close FROM market.daily_prices d JOIN market.symbol_ref s ON d.ticker = s.ticker WHERE s.market_cap_tier = 'LARGE' ORDER BY d.ticker, d.trade_date",
+
+  "SELECT d.ticker, d.trade_date, d.volume, d.adj_close FROM market.daily_prices d WHERE d.volume > 500000 ORDER BY d.volume DESC",
+
+  "SELECT d.ticker, d.trade_date, d.adj_close, e.adj_close AS etf_close FROM market.daily_prices d JOIN market.symbol_ref s ON d.ticker = s.ticker JOIN market.sector_etfs e ON e.etf_ticker = s.sector_etf AND e.trade_date = d.trade_date WHERE s.sector_etf = 'XLK'",
+
+  "SELECT d.ticker, d.trade_date, d.adj_close, e.adj_close AS etf_close FROM market.daily_prices d JOIN market.symbol_ref s ON d.ticker = s.ticker JOIN market.sector_etfs e ON e.etf_ticker = s.sector_etf AND e.trade_date = d.trade_date WHERE s.sector_etf = 'XLF'",
+
+  "SELECT s.ticker, s.company_name, s.sector_etf, e.etf_ticker FROM market.symbol_ref s JOIN market.sector_etfs e ON s.sector_etf = e.etf_ticker GROUP BY s.ticker, s.company_name, s.sector_etf, e.etf_ticker",
+
+  "SELECT x.trade_date, x.adj_close AS xlk_close, f.adj_close AS xlf_close, (x.adj_close / LAG(x.adj_close) OVER (ORDER BY x.trade_date)) - (f.adj_close / LAG(f.adj_close) OVER (ORDER BY f.trade_date)) AS relative_return FROM market.sector_etfs x JOIN market.sector_etfs f ON x.trade_date = f.trade_date WHERE x.etf_ticker = 'XLK' AND f.etf_ticker = 'XLF'",
+
+  "SELECT e.etf_ticker, e.trade_date, e.adj_close FROM market.sector_etfs e WHERE e.adj_close > 200 ORDER BY e.trade_date",
+
+  "SELECT o.contract_id, o.ticker, o.strike_price, o.iv, o.dte, d.adj_close, d.volume FROM options.options_chain o JOIN market.daily_prices d ON o.ticker = d.ticker AND o.trade_date = d.trade_date WHERE o.ticker = 'NVDA'",
+
+  "SELECT o.contract_id, o.ticker, o.strike_price, o.option_type, d.adj_close FROM options.options_chain o JOIN market.daily_prices d ON o.ticker = d.ticker WHERE o.expiration_date BETWEEN '2025-01-01' AND '2025-12-31'",
+
+  "SELECT o.contract_id, o.ticker, o.strike_price, o.delta, o.iv FROM options.options_chain o WHERE o.delta BETWEEN 0.15 AND 0.30",
+
+  "SELECT o.contract_id, o.ticker, o.strike_price, o.dte, o.iv FROM options.options_chain o WHERE o.dte BETWEEN 30 AND 45",
+
+  "SELECT m.indicator_code, m.announcement_date, m.value, d.ticker, d.adj_close FROM macro.macro_indicators m JOIN market.daily_prices d ON m.announcement_date = d.trade_date WHERE m.indicator_code = 'FEDFUNDS'",
+
+  "SELECT m.indicator_code, m.period_end_date, m.value, d.ticker, d.adj_close FROM macro.macro_indicators m JOIN market.daily_prices d ON m.period_end_date = d.trade_date WHERE m.indicator_code = 'GDP'",
+
+  "SELECT m.indicator_code, m.announcement_date, m.value, e.etf_ticker, e.adj_close FROM macro.macro_indicators m JOIN market.sector_etfs e ON m.announcement_date = e.trade_date WHERE m.indicator_code = 'FEDFUNDS'",
+
+  "SELECT m.indicator_code, m.announcement_date, m.value, d.ticker, d.adj_close FROM macro.macro_indicators m JOIN market.daily_prices d ON m.announcement_date = d.trade_date WHERE m.indicator_code = 'VIXCLS' AND d.ticker = 'NVDA'",
+
+  "SELECT jr.table_a, jr.col_a, jr.table_b, jr.col_b, jr.confidence, jr.reasoning FROM governance.join_relationships jr WHERE jr.confidence = 'HIGH'",
+
+  "SELECT jr.table_a, jr.col_a, jr.table_b, jr.col_b, jr.warning FROM governance.join_relationships jr WHERE jr.warning IS NOT NULL"
+]
