@@ -27,8 +27,6 @@ catalog = SqlCatalog(
     },
 )
 
-# ── Table definitions ──────────────────────────────────────────────
-
 TABLES = {
     "market.symbol_ref": Schema(
         NestedField(1, "ticker", StringType(), required=True),
@@ -88,7 +86,6 @@ TABLES = {
     ),
 }
 
-# ── DDL export (for LLM input later) ──────────────────────────────
 
 DDL_TYPE_MAP = {
     StringType: "STRING",
@@ -116,13 +113,11 @@ def create_tables():
     for full_name, schema in TABLES.items():
         namespace, table_name = full_name.split(".")
 
-        # Create namespace if needed
         existing_ns = [ns[0] for ns in catalog.list_namespaces()]
         if namespace not in existing_ns:
             catalog.create_namespace(namespace)
             print(f"  Created namespace: {namespace}")
 
-        # Create table (drop if exists for idempotency)
         existing_tables = [t[1] for t in catalog.list_tables(namespace)]
         if table_name in existing_tables:
             catalog.drop_table(f"{namespace}.{table_name}")
@@ -144,7 +139,6 @@ def validate():
     print("\n--- Validation ---")
     errors = []
 
-    # Check all tables exist in catalog
     for full_name in TABLES:
         namespace, table_name = full_name.split(".")
         try:
@@ -153,19 +147,18 @@ def validate():
         except Exception as e:
             errors.append(f"{full_name}: {e}")
 
-    # Check DuckDB iceberg_scan works
     print("\n  Testing DuckDB iceberg_scan reads...")
     con = duckdb.connect()
     con.execute("INSTALL iceberg; LOAD iceberg;")
+    con.execute("SET unsafe_enable_version_guessing = true;")
 
     for full_name in TABLES:
         namespace, table_name = full_name.split(".")
-        table = catalog.load_table(f"{namespace}.{table_name}")
-        metadata_path = table.metadata_location
+        table_dir = os.path.abspath(os.path.join(WAREHOUSE_DIR, namespace, table_name))
 
         try:
             result = con.execute(
-                f"SELECT * FROM iceberg_scan('{metadata_path}', allow_moved_paths = true) LIMIT 0"
+                f"SELECT * FROM iceberg_scan('{table_dir}', allow_moved_paths = true) LIMIT 0"
             ).fetchdf()
             print(f"  {full_name}: iceberg_scan OK ({len(result.columns)} columns)")
         except Exception as e:
