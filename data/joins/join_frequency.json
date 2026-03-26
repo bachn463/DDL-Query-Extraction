@@ -1,0 +1,79 @@
+[
+  {
+    "table_a": "market.daily_prices",
+    "col_a": "ticker",
+    "table_b": "market.symbol_ref",
+    "col_b": "ticker",
+    "frequency": 5
+  },
+  {
+    "table_a": "market.sector_etfs",
+    "col_a": "etf_ticker",
+    "table_b": "market.symbol_ref",
+    "col_b": "sector_etf",
+    "frequency": 2
+  },
+  {
+    "table_a": "market.sector_etfs",
+    "col_a": "trade_date",
+    "table_b": "market.daily_prices",
+    "col_b": "trade_date",
+    "frequency": 2
+  },
+  {
+    "table_a": "options.options_chain",
+    "col_a": "ticker",
+    "table_b": "market.daily_prices",
+    "col_b": "ticker",
+    "frequency": 2
+  },
+  {
+    "table_a": "macro.macro_indicators",
+    "col_a": "announcement_date",
+    "table_b": "market.daily_prices",
+    "col_b": "trade_date",
+    "frequency": 2
+  },
+  {
+    "table_a": "market.daily_prices",
+    "col_a": "trade_date",
+    "table_b": "market.daily_prices",
+    "col_b": "trade_date",
+    "frequency": 1
+  },
+  {
+    "table_a": "market.symbol_ref",
+    "col_a": "sector_etf",
+    "table_b": "market.sector_etfs",
+    "col_b": "etf_ticker",
+    "frequency": 1
+  },
+  {
+    "table_a": "market.sector_etfs",
+    "col_a": "trade_date",
+    "table_b": "market.sector_etfs",
+    "col_b": "trade_date",
+    "frequency": 1
+  },
+  {
+    "table_a": "options.options_chain",
+    "col_a": "trade_date",
+    "table_b": "market.daily_prices",
+    "col_b": "trade_date",
+    "frequency": 1
+  },
+  {
+    "table_a": "macro.macro_indicators",
+    "col_a": "period_end_date",
+    "table_b": "market.daily_prices",
+    "col_b": "trade_date",
+    "frequency": 1
+  },
+  {
+    "table_a": "macro.macro_indicators",
+    "col_a": "announcement_date",
+    "table_b": "market.sector_etfs",
+    "col_b": "trade_date",
+    "frequency": 1
+  }
+]
