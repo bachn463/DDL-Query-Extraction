@@ -1,0 +1,98 @@
+{
+  "run1_count": 7,
+  "run2_count": 9,
+  "only_in_run2": [
+    {
+      "table_a": "macro.macro_indicators",
+      "col_a": "period_end_date",
+      "table_b": "market.daily_prices",
+      "col_b": "trade_date"
+    },
+    {
+      "table_a": "options.options_chain",
+      "col_a": "ticker",
+      "table_b": "market.daily_prices",
+      "col_b": "ticker"
+    },
+    {
+      "table_a": "macro.macro_indicators",
+      "col_a": "announcement_date",
+      "table_b": "market.daily_prices",
+      "col_b": "trade_date"
+    },
+    {
+      "table_a": "market.daily_prices",
+      "col_a": "trade_date",
+      "table_b": "market.sector_etfs",
+      "col_b": "trade_date"
+    },
+    {
+      "table_a": "options.options_chain",
+      "col_a": "ticker",
+      "table_b": "market.symbol_ref",
+      "col_b": "ticker"
+    },
+    {
+      "table_a": "options.options_chain",
+      "col_a": "trade_date",
+      "table_b": "market.daily_prices",
+      "col_b": "trade_date"
+    },
+    {
+      "table_a": "market.daily_prices",
+      "col_a": "ticker",
+      "table_b": "market.symbol_ref",
+      "col_b": "ticker"
+    },
+    {
+      "table_a": "macro.macro_indicators",
+      "col_a": "announcement_date",
+      "table_b": "market.sector_etfs",
+      "col_b": "trade_date"
+    }
+  ],
+  "only_in_run1": [
+    {
+      "table_a": "market.sector_etfs",
+      "col_a": "trade_date",
+      "table_b": "options.options_chain",
+      "col_b": "trade_date"
+    },
+    {
+      "table_a": "market.symbol_ref",
+      "col_a": "ticker",
+      "table_b": "options.options_chain",
+      "col_b": "ticker"
+    },
+    {
+      "table_a": "market.daily_prices",
+      "col_a": "ticker",
+      "table_b": "options.options_chain",
+      "col_b": "ticker"
+    },
+    {
+      "table_a": "market.daily_prices",
+      "col_a": "trade_date",
+      "table_b": "options.options_chain",
+      "col_b": "trade_date"
+    },
+    {
+      "table_a": "market.sector_etfs",
+      "col_a": "trade_date",
+      "table_b": "market.daily_prices",
+      "col_b": "trade_date"
+    },
+    {
+      "table_a": "market.symbol_ref",
+      "col_a": "ticker",
+      "table_b": "market.daily_prices",
+      "col_b": "ticker"
+    }
+  ],
+  "warnings": [
+    {
+      "pair": "macro.macro_indicators.period_end_date -> market.daily_prices.trade_date",
+      "warning": "period_end_date represents data collection period end, not market event timing - may produce incorrect temporal relationships"
+    }
+  ]
+}

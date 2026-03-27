@@ -5,5 +5,5 @@ pyarrow
 sqlglot
 duckdb
 pyiceberg[sql-sqlite,pyarrow]
-openai
+anthropic
 python-dotenv

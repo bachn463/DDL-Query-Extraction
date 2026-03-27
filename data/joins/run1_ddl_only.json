@@ -1,0 +1,72 @@
+[
+  {
+    "table_a": "market.symbol_ref",
+    "col_a": "ticker",
+    "table_b": "market.daily_prices",
+    "col_b": "ticker",
+    "confidence": "HIGH",
+    "join_type": "INNER",
+    "reasoning": "Both tables contain ticker symbols representing the same securities",
+    "warning": null
+  },
+  {
+    "table_a": "market.symbol_ref",
+    "col_a": "ticker",
+    "table_b": "options.options_chain",
+    "col_b": "ticker",
+    "confidence": "HIGH",
+    "join_type": "INNER",
+    "reasoning": "Options contracts reference underlying securities by ticker symbol",
+    "warning": null
+  },
+  {
+    "table_a": "market.symbol_ref",
+    "col_a": "sector_etf",
+    "table_b": "market.sector_etfs",
+    "col_b": "etf_ticker",
+    "confidence": "HIGH",
+    "join_type": "LEFT",
+    "reasoning": "Symbol reference table links stocks to their sector ETFs",
+    "warning": "sector_etf column is nullable, so LEFT JOIN recommended"
+  },
+  {
+    "table_a": "market.daily_prices",
+    "col_a": "ticker",
+    "table_b": "options.options_chain",
+    "col_b": "ticker",
+    "confidence": "HIGH",
+    "join_type": "INNER",
+    "reasoning": "Options contracts are based on underlying securities tracked in daily prices",
+    "warning": null
+  },
+  {
+    "table_a": "market.daily_prices",
+    "col_a": "trade_date",
+    "table_b": "options.options_chain",
+    "col_b": "trade_date",
+    "confidence": "MEDIUM",
+    "join_type": "INNER",
+    "reasoning": "Both tables track trading activity on the same dates",
+    "warning": "Consider if you need data for the same ticker AND same date"
+  },
+  {
+    "table_a": "market.sector_etfs",
+    "col_a": "trade_date",
+    "table_b": "market.daily_prices",
+    "col_b": "trade_date",
+    "confidence": "MEDIUM",
+    "join_type": "INNER",
+    "reasoning": "Both tables contain price data for the same trading dates",
+    "warning": "Cross join potential - ensure additional filters are applied"
+  },
+  {
+    "table_a": "market.sector_etfs",
+    "col_a": "trade_date",
+    "table_b": "options.options_chain",
+    "col_b": "trade_date",
+    "confidence": "MEDIUM",
+    "join_type": "INNER",
+    "reasoning": "Both tables track trading activity on the same dates",
+    "warning": "Cross join potential - ensure additional filters are applied"
+  }
+]

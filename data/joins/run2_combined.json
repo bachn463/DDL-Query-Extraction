@@ -1,0 +1,101 @@
+[
+  {
+    "table_a": "market.daily_prices",
+    "col_a": "ticker",
+    "table_b": "market.symbol_ref",
+    "col_b": "ticker",
+    "confidence": "HIGH",
+    "join_type": "LEFT",
+    "reasoning": "Primary key relationship for stock symbol lookup, frequently used in queries",
+    "warning": null,
+    "frequency": 5
+  },
+  {
+    "table_a": "market.symbol_ref",
+    "col_a": "sector_etf",
+    "table_b": "market.sector_etfs",
+    "col_b": "etf_ticker",
+    "confidence": "HIGH",
+    "join_type": "LEFT",
+    "reasoning": "Links stocks to their sector ETF for sector analysis",
+    "warning": null,
+    "frequency": 3
+  },
+  {
+    "table_a": "options.options_chain",
+    "col_a": "ticker",
+    "table_b": "market.symbol_ref",
+    "col_b": "ticker",
+    "confidence": "HIGH",
+    "join_type": "LEFT",
+    "reasoning": "Links options contracts to underlying stock information",
+    "warning": null,
+    "frequency": 0
+  },
+  {
+    "table_a": "options.options_chain",
+    "col_a": "ticker",
+    "table_b": "market.daily_prices",
+    "col_b": "ticker",
+    "confidence": "HIGH",
+    "join_type": "INNER",
+    "reasoning": "Links options to underlying stock prices for analysis",
+    "warning": null,
+    "frequency": 2
+  },
+  {
+    "table_a": "options.options_chain",
+    "col_a": "trade_date",
+    "table_b": "market.daily_prices",
+    "col_b": "trade_date",
+    "confidence": "MEDIUM",
+    "join_type": "INNER",
+    "reasoning": "Time-based join for same-day options and stock data",
+    "warning": null,
+    "frequency": 1
+  },
+  {
+    "table_a": "market.daily_prices",
+    "col_a": "trade_date",
+    "table_b": "market.sector_etfs",
+    "col_b": "trade_date",
+    "confidence": "MEDIUM",
+    "join_type": "INNER",
+    "reasoning": "Time-based join for comparing stock and sector performance on same dates",
+    "warning": null,
+    "frequency": 2
+  },
+  {
+    "table_a": "macro.macro_indicators",
+    "col_a": "announcement_date",
+    "table_b": "market.daily_prices",
+    "col_b": "trade_date",
+    "confidence": "MEDIUM",
+    "join_type": "LEFT",
+    "reasoning": "Links macro announcements to market reactions on announcement dates",
+    "warning": null,
+    "frequency": 2
+  },
+  {
+    "table_a": "macro.macro_indicators",
+    "col_a": "announcement_date",
+    "table_b": "market.sector_etfs",
+    "col_b": "trade_date",
+    "confidence": "MEDIUM",
+    "join_type": "LEFT",
+    "reasoning": "Links macro announcements to sector ETF reactions on announcement dates",
+    "warning": null,
+    "frequency": 1
+  },
+  {
+    "table_a": "macro.macro_indicators",
+    "col_a": "period_end_date",
+    "table_b": "market.daily_prices",
+    "col_b": "trade_date",
+    "confidence": "LOW",
+    "join_type": "LEFT",
+    "reasoning": "Links macro data period end to market data, but semantically different time concepts",
+    "warning": "period_end_date represents data collection period end, not market event timing - may produce incorrect temporal relationships",
+    "frequency": 1
+  }
+]
